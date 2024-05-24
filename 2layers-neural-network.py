@@ -14,12 +14,12 @@ rng = np.random.default_rng()
 # Initialize weights and bias
 weights = rng.integers(low=0, high=11, size=(hidden_layer, features)) * 0.01
 weights2 = rng.integers(low=0, high=11, size=(outputs_num, hidden_layer)) * 0.01
-bias = np.zeros((3,1))
+bias = np.zeros((hidden_layer,outputs_num))
 bias2 = 0
 
 # Generate random data
 X = rng.integers(low=0, high=21, size=(features, sample_num))
-Y = rng.integers(low=0, high=2, size=(1, sample_num))
+Y = rng.integers(low=0, high=2, size=(outputs_num, sample_num))
 
 # Training loop
 for epoch in range(epochs):
@@ -32,7 +32,7 @@ for epoch in range(epochs):
         a2 = np.array(tf.sigmoid(z2))
 
         # Compute logistic loss
-        loss = -np.sum(Y * np.log(a2) + (1 - Y) * np.log(1 - a2)) / sample_num
+        loss = -np.sum(Y * np.log(a2 + 1e-8) + (1 - Y) * np.log(1 - a2 + 1e-8)) / sample_num
         print(f'Epoch {epoch + 1}, Loss: {loss}')
 
         # Compute gradients
